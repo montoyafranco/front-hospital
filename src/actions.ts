@@ -51,3 +51,17 @@ export async function putNote(id:any, name:any,physician_in_charge :any){
 
   return response;
 }
+export async function createAppointment(bodyAppointment : any){
+  const response:Response = await fetch('http://localhost:8081/api/create/appointment', 
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(bodyAppointment)
+  })
+
+  return response;
+}
+
+

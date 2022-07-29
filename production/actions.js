@@ -42,14 +42,26 @@ export function deleteNote(id) {
         return response;
     });
 }
-export function putNote(note) {
+export function putNote(id, name, physician_in_charge) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch('http://localhost:8081/api/v1/update/note', {
+        console.log(id);
+        const response = yield fetch(`http://localhost:8081/api/update/${id}?name=${name}&physician_in_charge=${physician_in_charge}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(note)
+        });
+        return response;
+    });
+}
+export function createAppointment(bodyAppointment) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch('http://localhost:8081/api/create/appointment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bodyAppointment)
         });
         return response;
     });

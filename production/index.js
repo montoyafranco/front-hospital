@@ -1,4 +1,4 @@
-import { getAll, postNote, deleteNote } from "./actions.js";
+import { getAll, postNote, deleteNote, putNote } from "./actions.js";
 const form = document.querySelector('.reminders-form');
 // export interface noteI {
 //   id: number|null  ;
@@ -6,6 +6,8 @@ const form = document.querySelector('.reminders-form');
 //   physician_in_charge: string;
 //   appointmentList: []|null ;
 // }
+// Selector of appointment creator
+const formAppointment = document.querySelector('.appointment-form');
 getAll().then(notes => {
     state = notes;
     recreateNotes(notes);
@@ -38,9 +40,14 @@ function createReminder(note) {
     const editButton = document.createElement('button');
     editButton.className = 'single-note-edit-button';
     editButton.innerText = 'edit';
-    // editButton.addEventListener('click', ()=> hanldeEdit(note))
+    editButton.addEventListener('click', () => hanldeEdit(note));
     div.append(h3, h2, reminderP, dateP, deleteButton, editButton);
     notesContainer.append(div);
+}
+// logica para crear el appopitnment y recibir los datos 
+formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener('submit', (e) => handleSubmitAppointment(e));
+function handleSubmitAppointment(e) {
+    throw new Error("Function not implemented.");
 }
 form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
 function handleSubmit(e) {
@@ -77,17 +84,44 @@ function handleDelete(div) {
         }
     });
 }
-// function hanldeEdit(note:any){
-//   const titleInput = document.querySelector('.title-input') as HTMLInputElement;
-//   const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
-//   const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
-//   submitButton.classList.add('display_none')
-//   const editButton:HTMLButtonElement = document.createElement('button')
-//   editButton.className = 'form-edit-button'
-//   editButton.innerText = 'Edit';
-//   editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput))
-//   const formContainer = document.querySelector('.form-container');
-//   formContainer?.append(editButton)
-//   titleInput.value = note.title
-//   reminderInput.value = note.reminder;
-// }
+function hanldeEdit(note) {
+    const titleInput = document.querySelector('.title-input');
+    const reminderInput = document.querySelector('.reminder-input');
+    const submitButton = document.querySelector('.reminders-form-button');
+    submitButton.classList.add('display_none');
+    const editButton = document.createElement('button');
+    editButton.className = 'form-edit-button';
+    editButton.innerText = 'Edit';
+    editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput));
+    const formContainer = document.querySelector('.form-container');
+    formContainer === null || formContainer === void 0 ? void 0 : formContainer.append(editButton);
+    titleInput.value = note.title;
+    reminderInput.value = note.reminder;
+}
+function executeEdition(note, title, reminder) {
+    const date = new Date();
+    date.setHours(date.getHours() - 5);
+    const noteEdited = {
+        id: note.id,
+        title: title.value,
+        reminder: reminder.value,
+    };
+    putNote(note.id, title.value, reminder.value).then(response => {
+        if (response.status === 200) {
+            const newState = state.map((note) => note.id === noteEdited.id ? noteEdited : note);
+            state = newState;
+            const h2Title = document.querySelector(`.single-note-title-${note.id}`);
+            h2Title.innerText = noteEdited.title;
+            const pReminder = document.querySelector(`.single-note-reminder-${note.id}`);
+            pReminder.innerText = noteEdited.reminder;
+            const pDate = document.querySelector(`.single-note-date-${note.id}`);
+            pDate.innerText = noteEdited.date;
+            title.value = '';
+            reminder.value = '';
+            const submitButton = document.querySelector('.reminders-form-button');
+            submitButton.classList.remove('display_none');
+            const editButton = document.querySelector('.form-edit-button');
+            editButton.remove();
+        }
+    });
+}

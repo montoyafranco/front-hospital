@@ -1,4 +1,4 @@
-import { getAll, postNote, deleteNote, putNote } from "./actions.js";
+import { getAll, postNote, deleteNote, putNote,createAppointment } from "./actions.js";
 
 const form: HTMLFormElement |null = 
 document.querySelector('.reminders-form');
@@ -12,6 +12,9 @@ document.querySelector('.reminders-form');
 //   physician_in_charge: string;
 //   appointmentList: []|null ;
 // }
+
+// Selector of appointment creator
+const formAppointment : HTMLFormElement | null = document.querySelector('.appointment-form')
 
 getAll().then(notes => {
   state = notes
@@ -54,10 +57,16 @@ function createReminder(note:any){
   const editButton:HTMLButtonElement = document.createElement('button')
   editButton.className = 'single-note-edit-button'
   editButton.innerText = 'edit'
-  // editButton.addEventListener('click', ()=> hanldeEdit(note))
+   editButton.addEventListener('click', ()=> hanldeEdit(note))
 
   div.append(h3 ,h2, reminderP, dateP, deleteButton, editButton)
   notesContainer.append(div)
+}
+// logica para crear el appopitnment y recibir los datos 
+formAppointment?.addEventListener('submit',(e) => handleSubmitAppointment(e))
+
+function handleSubmitAppointment(e: SubmitEvent): any {
+  throw new Error("Function not implemented.");
 }
 
 form?.addEventListener('submit', (e) => handleSubmit(e))
@@ -70,13 +79,10 @@ function handleSubmit(e:SubmitEvent){
     const date = new Date()
     date.setHours(date.getHours() - 5)
 
-    const newNote = {
-      
+    const newNote = {     
       
       name: titleInput.value,
-      physician_in_charge: reminderInput.value,
-      
-      
+      physician_in_charge: reminderInput.value,         
       
     }
 
@@ -109,21 +115,61 @@ function handleDelete(div:HTMLDivElement){
     }
   })
 }
+function hanldeEdit(note:any){
+  const titleInput = document.querySelector('.title-input') as HTMLInputElement;
+  const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
+  const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
+  submitButton.classList.add('display_none')
 
-// function hanldeEdit(note:any){
-//   const titleInput = document.querySelector('.title-input') as HTMLInputElement;
-//   const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
-//   const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
-//   submitButton.classList.add('display_none')
+  const editButton:HTMLButtonElement = document.createElement('button')
+  editButton.className = 'form-edit-button'
+  editButton.innerText = 'Edit';
+  editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput))
 
-//   const editButton:HTMLButtonElement = document.createElement('button')
-//   editButton.className = 'form-edit-button'
-//   editButton.innerText = 'Edit';
-//   editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput))
-
-//   const formContainer = document.querySelector('.form-container');
-//   formContainer?.append(editButton)
+  const formContainer = document.querySelector('.form-container');
+  formContainer?.append(editButton)
   
-//   titleInput.value = note.title
-//   reminderInput.value = note.reminder;
-// }
+  titleInput.value = note.title
+  reminderInput.value = note.reminder;
+}
+function executeEdition(note:any, title:HTMLInputElement, reminder:HTMLInputElement){
+
+  const date = new Date();
+  date.setHours(date.getHours() - 5)
+
+  const noteEdited:any= {
+    id:note.id,
+    title:title.value,
+    reminder:reminder.value,
+    
+  }
+
+  putNote(note.id ,title.value ,reminder.value).then(response => {
+    if(response.status === 200){
+      const newState:any= state.map((note: { id: any; }) => note.id === noteEdited.id?noteEdited:note)
+      state = newState;
+    
+      const h2Title = document.querySelector(`.single-note-title-${note.id}`) as HTMLHeadingElement
+      h2Title.innerText = noteEdited.title
+      const pReminder = document.querySelector(`.single-note-reminder-${note.id}`) as HTMLParagraphElement
+      pReminder.innerText = noteEdited.reminder
+    
+      const pDate = document.querySelector(`.single-note-date-${note.id}`) as HTMLParagraphElement
+      pDate.innerText = noteEdited.date
+      
+      title.value = ''
+      reminder.value = ''
+      const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
+      submitButton.classList.remove('display_none')
+    
+      const editButton = document.querySelector('.form-edit-button') as HTMLButtonElement
+    
+      editButton.remove()
+    }
+  })
+
+  
+
+}
+
+
