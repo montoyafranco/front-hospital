@@ -98,8 +98,7 @@ function handleDelete(div:HTMLDivElement){
   const id:string = div.classList[1].split('-')[1]
 
   console.log("soy id" ,id)
-  const idObjetc: any = id
-  
+  const idObjetc: any = id  
 
   console.log("soy el obejto", idObjetc)
   deleteNote({"id" :idObjetc}).then(response => {

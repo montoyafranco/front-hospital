@@ -38,14 +38,15 @@ export async function deleteNote(id:any){
   return response;
 }
 
-export async function putNote(note:any){
-  const response:Response = await fetch('http://localhost:8081/api/v1/update/note', 
+export async function putNote(id:any, name:any,physician_in_charge :any){
+  console.log(id)
+  const response:Response = await fetch(`http://localhost:8081/api/update/${id}?name=${name}&physician_in_charge=${physician_in_charge}`,
   {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json' 
     },
-    body: JSON.stringify(note)
+    
   })
 
   return response;
