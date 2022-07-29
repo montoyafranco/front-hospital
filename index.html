@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hospital</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="main-container">
+      <h1 class="title">Reminders</h1>
+      <div class="form-notes-container">
+        <section class="form-container">
+          <form class="reminders-form" action="#">
+            <input placeholder="title" class="title-input" type="text" />
+            <input placeholder="reminder" class="reminder-input" type="text" />
+            
+            <button class="reminders-form-button">Submit</button>
+          </form>
+        </section>
+        <div class="notes-container"></div>
+      </div>
+    </div>
 
-
-<script defer type="module" src="./production/index.js"></script>    
-</body>
+    <script defer type="module" src="./production/index.js"></script>
+  </body>
 </html>
