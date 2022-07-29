@@ -47,6 +47,7 @@ function createReminder(note) {
 // logica para crear el appopitnment y recibir los datos 
 formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener('submit', (e) => handleSubmitAppointment(e));
 function handleSubmitAppointment(e) {
+    e.preventDefault();
     throw new Error("Function not implemented.");
 }
 form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));

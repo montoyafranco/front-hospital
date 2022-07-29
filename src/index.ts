@@ -66,6 +66,7 @@ function createReminder(note:any){
 formAppointment?.addEventListener('submit',(e) => handleSubmitAppointment(e))
 
 function handleSubmitAppointment(e: SubmitEvent): any {
+  e.preventDefault()
   throw new Error("Function not implemented.");
 }
 
