@@ -1,10 +1,12 @@
-import { getAll, postNote, deleteNote, putNote,createAppointment } from "./actions.js";
+import { getAll, postNote, deleteNote, putNote,createAppointment,deleteAppointment } from "./actions.js";
 
 const form: HTMLFormElement |null = 
 document.querySelector('.reminders-form');
 
 // Selector of appointment creator
 const formAppointment : HTMLFormElement | null = document.querySelector('.appointment-form')
+
+const formAppointmentDelete : HTMLFormElement | null = document.querySelector('.appointment-form-delete')
 
 getAll().then(notes => {
   state = notes
@@ -54,6 +56,11 @@ function createReminder(note:any){
 }
 // logica para crear el appopitnment y recibir los datos 
 formAppointment?.addEventListener('submit',(e) => handleSubmitAppointment(e))
+//
+formAppointmentDelete?.addEventListener('submit',(e) => handleSubmitAppointmentDelete(e))
+
+form?.addEventListener('submit', (e) => handleSubmit(e))
+
 
 function handleSubmitAppointment(e: SubmitEvent): any {
   e.preventDefault()
@@ -74,7 +81,12 @@ function handleSubmitAppointment(e: SubmitEvent): any {
 }
 
 
-form?.addEventListener('submit', (e) => handleSubmit(e))
+
+
+function handleSubmitAppointmentDelete(e: SubmitEvent): any {
+  const id= document.querySelector('.id-input-deleted-appointment') as HTMLInputElement;
+  deleteAppointment({"id": id.value})
+}
 
 function handleSubmit(e:SubmitEvent){
   e.preventDefault()
@@ -176,5 +188,7 @@ function executeEdition(note:any, title:HTMLInputElement, reminder:HTMLInputElem
   
 
 }
+
+
 
 

@@ -1,7 +1,8 @@
-import { getAll, postNote, deleteNote, putNote, createAppointment } from "./actions.js";
+import { getAll, postNote, deleteNote, putNote, createAppointment, deleteAppointment } from "./actions.js";
 const form = document.querySelector('.reminders-form');
 // Selector of appointment creator
 const formAppointment = document.querySelector('.appointment-form');
+const formAppointmentDelete = document.querySelector('.appointment-form-delete');
 getAll().then(notes => {
     state = notes;
     recreateNotes(notes);
@@ -40,6 +41,9 @@ function createReminder(note) {
 }
 // logica para crear el appopitnment y recibir los datos 
 formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener('submit', (e) => handleSubmitAppointment(e));
+//
+formAppointmentDelete === null || formAppointmentDelete === void 0 ? void 0 : formAppointmentDelete.addEventListener('submit', (e) => handleSubmitAppointmentDelete(e));
+form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
 function handleSubmitAppointment(e) {
     e.preventDefault();
     const name = document.querySelector('.name-input');
@@ -56,7 +60,10 @@ function handleSubmitAppointment(e) {
         "fkSpecialityId": fkSpecialityId.value
     });
 }
-form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
+function handleSubmitAppointmentDelete(e) {
+    const id = document.querySelector('.id-input-deleted-appointment');
+    deleteAppointment({ "id": id.value });
+}
 function handleSubmit(e) {
     e.preventDefault();
     const titleInput = document.querySelector('.title-input');
