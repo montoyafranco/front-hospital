@@ -77,5 +77,15 @@ export async function deleteAppointment(id:any){
 
   return response;
 }
-
-
+export async function modifyAppointment(id:any, dateAppointments :any){
+  console.log(id)
+  const response:Response = await fetch(`http://localhost:8081/api/update/appointment/${id}?dateAppointments=${dateAppointments}`,
+  {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    
+  })
+  return response;
+}

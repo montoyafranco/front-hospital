@@ -79,3 +79,15 @@ export function deleteAppointment(id) {
         return response;
     });
 }
+export function modifyAppointment(id, dateAppointments) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(id);
+        const response = yield fetch(`http://localhost:8081/api/update/appointment/${id}?dateAppointments=${dateAppointments}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        return response;
+    });
+}
