@@ -10,6 +10,7 @@ export async function getAll() {
 } 
 
 export async function postNote(note:any){
+  console.log(note)
   const response:Response = await fetch('http://localhost:8081/api/create/speciality', 
   {
     method: 'POST',
@@ -22,10 +23,16 @@ export async function postNote(note:any){
   return response;
 }
 
-export async function deleteNote(id:string){
-  const response:Response = await fetch(`http://localhost:8081/api/v1/delete/note/${id}`, 
+export async function deleteNote(id:any){
+  console.log(id)
+  const response:Response = await fetch("http://localhost:8081/api/delete/speciality", 
   {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    
+    body: JSON.stringify(id)
   })
 
   return response;

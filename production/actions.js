@@ -18,6 +18,7 @@ export function getAll() {
 }
 export function postNote(note) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(note);
         const response = yield fetch('http://localhost:8081/api/create/speciality', {
             method: 'POST',
             headers: {
@@ -30,8 +31,13 @@ export function postNote(note) {
 }
 export function deleteNote(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch(`http://localhost:8081/api/v1/delete/note/${id}`, {
-            method: 'DELETE'
+        console.log(id);
+        const response = yield fetch("http://localhost:8081/api/delete/speciality", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id)
         });
         return response;
     });

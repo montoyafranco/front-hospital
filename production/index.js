@@ -1,4 +1,4 @@
-import { getAll, postNote } from "./actions.js";
+import { getAll, postNote, deleteNote } from "./actions.js";
 const form = document.querySelector('.reminders-form');
 // export interface noteI {
 //   id: number|null  ;
@@ -34,7 +34,7 @@ function createReminder(note) {
     const deleteButton = document.createElement('button');
     deleteButton.className = 'single-note-delete-button';
     deleteButton.innerText = 'X';
-    // deleteButton.addEventListener('click', ()=> handleDelete(div))
+    deleteButton.addEventListener('click', () => handleDelete(div));
     const editButton = document.createElement('button');
     editButton.className = 'single-note-edit-button';
     editButton.innerText = 'edit';
@@ -64,3 +64,30 @@ function handleSubmit(e) {
         });
     }
 }
+function handleDelete(div) {
+    const id = div.classList[1].split('-')[1];
+    console.log("soy id", id);
+    const idObjetc = id;
+    console.log("soy el obejto", idObjetc);
+    deleteNote({ "id": idObjetc }).then(response => {
+        if (response.status === 200) {
+            div.remove();
+            const newSate = state.filter((note) => note.id !== parseInt(id));
+            state = newSate;
+        }
+    });
+}
+// function hanldeEdit(note:any){
+//   const titleInput = document.querySelector('.title-input') as HTMLInputElement;
+//   const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
+//   const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
+//   submitButton.classList.add('display_none')
+//   const editButton:HTMLButtonElement = document.createElement('button')
+//   editButton.className = 'form-edit-button'
+//   editButton.innerText = 'Edit';
+//   editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput))
+//   const formContainer = document.querySelector('.form-container');
+//   formContainer?.append(editButton)
+//   titleInput.value = note.title
+//   reminderInput.value = note.reminder;
+// }
