@@ -3,16 +3,6 @@ import { getAll, postNote, deleteNote, putNote,createAppointment } from "./actio
 const form: HTMLFormElement |null = 
 document.querySelector('.reminders-form');
 
-
-// export interface noteI {
-
- 
-//   id: number|null  ;
-//   name: string;
-//   physician_in_charge: string;
-//   appointmentList: []|null ;
-// }
-
 // Selector of appointment creator
 const formAppointment : HTMLFormElement | null = document.querySelector('.appointment-form')
 
@@ -67,8 +57,22 @@ formAppointment?.addEventListener('submit',(e) => handleSubmitAppointment(e))
 
 function handleSubmitAppointment(e: SubmitEvent): any {
   e.preventDefault()
-  throw new Error("Function not implemented.");
+  const name = document.querySelector('.name-input') as HTMLInputElement;
+  const age = document.querySelector('.age-input') as HTMLInputElement;
+  const identification_number= document.querySelector('.identification-input') as HTMLInputElement;
+  const dateAppointments = document.querySelector('.date-input') as HTMLInputElement;
+  const fkSpecialityId = document.querySelector('.speciality-input') as HTMLInputElement;
+  console.log(name.value,age.value,identification_number.value,dateAppointments.value,fkSpecialityId.value)
+  createAppointment({    
+    "name": name.value,
+    "age": age.value,
+    "identification_number":identification_number.value,
+    "dateAppointments": dateAppointments.value,    
+    "fkSpecialityId": fkSpecialityId.value
+  }
+  ) 
 }
+
 
 form?.addEventListener('submit', (e) => handleSubmit(e))
 

@@ -66,3 +66,16 @@ export function createAppointment(bodyAppointment) {
         return response;
     });
 }
+export function deleteAppointment(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(id);
+        const response = yield fetch("http://localhost:8081/api/delete/appointment", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        });
+        return response;
+    });
+}

@@ -63,5 +63,19 @@ export async function createAppointment(bodyAppointment : any){
 
   return response;
 }
+export async function deleteAppointment(id:any){
+  console.log(id)
+  const response:Response = await fetch("http://localhost:8081/api/delete/appointment", 
+  {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json' 
+    },
+    
+    body: JSON.stringify(id)
+  })
+
+  return response;
+}
 
 

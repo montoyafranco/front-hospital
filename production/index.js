@@ -1,11 +1,5 @@
-import { getAll, postNote, deleteNote, putNote } from "./actions.js";
+import { getAll, postNote, deleteNote, putNote, createAppointment } from "./actions.js";
 const form = document.querySelector('.reminders-form');
-// export interface noteI {
-//   id: number|null  ;
-//   name: string;
-//   physician_in_charge: string;
-//   appointmentList: []|null ;
-// }
 // Selector of appointment creator
 const formAppointment = document.querySelector('.appointment-form');
 getAll().then(notes => {
@@ -48,7 +42,19 @@ function createReminder(note) {
 formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener('submit', (e) => handleSubmitAppointment(e));
 function handleSubmitAppointment(e) {
     e.preventDefault();
-    throw new Error("Function not implemented.");
+    const name = document.querySelector('.name-input');
+    const age = document.querySelector('.age-input');
+    const identification_number = document.querySelector('.identification-input');
+    const dateAppointments = document.querySelector('.date-input');
+    const fkSpecialityId = document.querySelector('.speciality-input');
+    console.log(name.value, age.value, identification_number.value, dateAppointments.value, fkSpecialityId.value);
+    createAppointment({
+        "name": name.value,
+        "age": age.value,
+        "identification_number": identification_number.value,
+        "dateAppointments": dateAppointments.value,
+        "fkSpecialityId": fkSpecialityId.value
+    });
 }
 form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
 function handleSubmit(e) {
