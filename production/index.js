@@ -79,16 +79,16 @@ function handleSubmit(e) {
     location.reload();
 }
 function deteleApply(div) {
-    const id = div.classList[1].split("-")[1];
+    const id = div.classList[1]
+        .split("-")[1];
     console.log("soy id", id);
     const idObjetc = id;
     console.log("soy el obejto", idObjetc);
     deleteCard({ id: idObjetc }).then((response) => {
         if (response.status === 200) {
             div.remove();
-            const newPersist = persist.filter((cards) => cards.id !== parseInt(id));
-            persist = newPersist;
         }
+        location.reload();
     });
 }
 function editApply(cards) {

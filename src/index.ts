@@ -135,7 +135,8 @@ function handleSubmit(e: SubmitEvent) {
   location.reload();
 }
 function deteleApply(div: HTMLDivElement) {
-  const id: string = div.classList[1].split("-")[1];
+  const id: string = div.classList[1]
+  .split("-")[1];
 
   console.log("soy id", id);
   const idObjetc: any = id;
@@ -143,11 +144,9 @@ function deteleApply(div: HTMLDivElement) {
   deleteCard({ id: idObjetc }).then((response) => {
     if (response.status === 200) {
       div.remove();
-      const newPersist = persist.filter(
-        (cards: { id: number }) => cards.id !== parseInt(id)
-      );
-      persist = newPersist;
+      
     }
+    location.reload()
   });
 }
 function editApply(cards: any) {
