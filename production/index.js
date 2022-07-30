@@ -15,29 +15,27 @@ function recreateNotes(notes) {
 function createReminder(note) {
     const notesContainer = document.querySelector('.notes-container');
     const div = document.createElement('div');
-    div.className = 'single-note-container';
+    div.className = 'single-todo-container';
     div.classList.add(`note-${note.id}`);
     const h3 = document.createElement('h3');
     h3.className = `single-note-title-${note.id}`;
-    h3.innerText = note.id.toString();
-    const h2 = document.createElement('h2');
-    h2.className = `single-note-title-${note.id}`;
-    h2.innerText = note.name;
-    const reminderP = document.createElement('p');
-    reminderP.className = `single-note-reminder-${note.id}`;
-    reminderP.innerText = note.physician_in_charge;
+    h3.innerText = `ID Specialist: ${note.id.toString()}
+  Specialist : ${note.name}
+  Physician in charge : ${note.physician_in_charge}
+
+   `;
     const dateP = document.createElement('p');
-    dateP.className = `single-note-date-${note.id}`;
+    dateP.className = `single-note-date-${note.id} appointments`;
     dateP.innerText = JSON.stringify(note.appointmentList, null, '\t');
     const deleteButton = document.createElement('button');
     deleteButton.className = 'single-note-delete-button';
-    deleteButton.innerText = 'X';
+    deleteButton.innerText = 'Delete Speciality';
     deleteButton.addEventListener('click', () => handleDelete(div));
     const editButton = document.createElement('button');
     editButton.className = 'single-note-edit-button';
-    editButton.innerText = 'edit';
+    editButton.innerText = 'Change Medical Speciality';
     editButton.addEventListener('click', () => hanldeEdit(note));
-    div.append(h3, h2, reminderP, dateP, deleteButton, editButton);
+    div.append(h3, deleteButton, editButton, dateP);
     notesContainer.append(div);
 }
 // logica para crear el appopitnment y recibir los datos 
@@ -47,7 +45,6 @@ formAppointmentDelete === null || formAppointmentDelete === void 0 ? void 0 : fo
 form === null || form === void 0 ? void 0 : form.addEventListener('submit', (e) => handleSubmit(e));
 formAppointmentUpdate === null || formAppointmentUpdate === void 0 ? void 0 : formAppointmentUpdate.addEventListener('submit', (e) => handleSubmitAppointmentUpdate(e));
 function handleSubmitAppointmentUpdate(e) {
-    e.preventDefault();
     const id = document.querySelector('.id-input-modify-appointment');
     const dateAppointments = document.querySelector('.date-input-appointment-modify');
     modifyAppointment(id.value, dateAppointments.value);
@@ -77,8 +74,6 @@ function handleSubmit(e) {
     const titleInput = document.querySelector('.title-input');
     const reminderInput = document.querySelector('.reminder-input');
     if (titleInput.value && reminderInput.value) {
-        const date = new Date();
-        date.setHours(date.getHours() - 5);
         const newNote = {
             name: titleInput.value,
             physician_in_charge: reminderInput.value,
@@ -113,7 +108,7 @@ function hanldeEdit(note) {
     submitButton.classList.add('display_none');
     const editButton = document.createElement('button');
     editButton.className = 'form-edit-button';
-    editButton.innerText = 'Edit';
+    editButton.innerText = 'Submit New Data';
     editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput));
     const formContainer = document.querySelector('.form-container');
     formContainer === null || formContainer === void 0 ? void 0 : formContainer.append(editButton);
@@ -121,29 +116,9 @@ function hanldeEdit(note) {
     reminderInput.value = note.reminder;
 }
 function executeEdition(note, title, reminder) {
-    const date = new Date();
-    date.setHours(date.getHours() - 5);
-    const noteEdited = {
-        id: note.id,
-        title: title.value,
-        reminder: reminder.value,
-    };
     putNote(note.id, title.value, reminder.value).then(response => {
         if (response.status === 200) {
-            const newState = state.map((note) => note.id === noteEdited.id ? noteEdited : note);
-            state = newState;
-            const h2Title = document.querySelector(`.single-note-title-${note.id}`);
-            h2Title.innerText = noteEdited.title;
-            const pReminder = document.querySelector(`.single-note-reminder-${note.id}`);
-            pReminder.innerText = noteEdited.reminder;
-            const pDate = document.querySelector(`.single-note-date-${note.id}`);
-            pDate.innerText = noteEdited.date;
-            title.value = '';
-            reminder.value = '';
-            const submitButton = document.querySelector('.reminders-form-button');
-            submitButton.classList.remove('display_none');
-            const editButton = document.querySelector('.form-edit-button');
-            editButton.remove();
+            location.reload();
         }
     });
 }

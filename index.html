@@ -4,29 +4,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css">
     <title>Hospital</title>
   </head>
   <body>
-    <div class="main-container">
-      <h1 class="title">Create Speciality</h1>
+    
+    </div>
+    <div class="main-container ">
+      <div class="all-inputs">
+        <div class="create-speciality-css"></div>
+      
       <div class="form-notes-container">
         <section class="form-container">
-          <form class="reminders-form" action="#">
-            <input placeholder="title" class="title-input" type="text" />
-            <input placeholder="reminder" class="reminder-input" type="text" />
+          
+          <form class="reminders-form " action="#">
+            <h4 class="title">Create Speciality</h4>
+            <input placeholder="Speciality" class="title-input" type="text" minlength="5" maxlength="100" required/>
+            <input placeholder="Physician in charge" class="reminder-input" type="text" minlength="10" maxlength="45" required />
             
             <button class="reminders-form-button">Create Speciality</button>
           </form>
         </section>
         <div class="container-create-appointment">
         <div class="form-container-create-appointment">
-          <h4>Create Appointment choosing ID of Speciality</h4>
+          
            <form action="#" class="appointment-form">
-            <input placeholder="Name of Patient" class="name-input" type="text" />
-            <input placeholder="Age" class="age-input" type="text" />
-            <input placeholder="Identification number" class="identification-input" type="text" />
-            <input placeholder="Date of Appointment" class="date-input" type="text" />
-            <input placeholder="Specialty ID" class="speciality-input" type="text" />
+            <h4>Create Appointment choosing ID of Speciality</h4>
+            <input placeholder="Name of Patient" class="name-input" type="text" required minlength="10" maxlength="45" />
+            <input placeholder="Age" class="age-input" type="number" required min="1"  />
+            <input placeholder="Identification number" class="identification-input" type="number" required />
+            <input placeholder="Date of Appointment" class="date-input" type="date" required />
+            <input placeholder="Specialty ID" class="speciality-input" type="number" required min="1"/>
             <button class="appointment-form-button">Create Appointment</button>
 
            </form>
@@ -34,10 +42,11 @@
 
         </div>
         <div class="form-container-delete-appointment">
-          <h4>Choose the Appointment Introducing the ID to Delete  </h4>
+          
            <form action="#" class="appointment-form-delete">
+            <h4>Choose the Appointment Introducing the ID to Delete  </h4>
             <input placeholder="ID" class="id-input-deleted-appointment" type="text" />            
-            <!-- <input placeholder="Date of Appointment" class="date-input-appointment-modify" type="text" /> -->            
+                    
             <button class="appointment-form-button-delete">Appointment Delete</button>
 
            </form>
@@ -45,10 +54,11 @@
 
         </div>
         <div class="form-container-delete-update-appointment">
-          <h4>Choose the Appointment to add a Date  </h4>
+          
            <form action="#" class="appointment-form-update">
+            <h4>Choose the Appointment to add a Date  </h4>
             <input placeholder="ID" class="id-input-modify-appointment" type="text" />            
-            <input placeholder="Date of Appointment" class="date-input-appointment-modify" type="text" />            
+            <input placeholder="Date of Appointment" class="date-input-appointment-modify" type="date" />            
             <button class="appointment-form-button-delete">Appointment Update</button>
 
            </form>
@@ -59,8 +69,11 @@
 
 
         </div>
-        <div class="notes-container"></div>
       </div>
+        
+      </div>
+      <div class="container-super"><div class="notes-container"></div></div>
+      
     </div>
 
     <script defer type="module" src="./production/index.js"></script>
