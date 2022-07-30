@@ -3,10 +3,11 @@ import {
   postCard,
   deleteCard,
   putCard,
-  createAppointment,
-  deleteAppointment,
-  modifyAppointment,
+  
 } from "./actions.js";
+import{createAppointment,
+  deleteAppointment,
+  modifyAppointment,}from "./actions-appointment.js"
 
 const form: HTMLFormElement | null = document.querySelector(".medical-form");
 
@@ -124,19 +125,13 @@ function handleSubmit(e: SubmitEvent) {
   const specialInput = document.querySelector(
     ".special-input"
   ) as HTMLInputElement;
-  if (titleInput.value && specialInput.value) {
+  
     const newCard = {
       name: titleInput.value,
       physician_in_charge: specialInput.value,
     };
-
-    postCard(newCard).then((response) => {
-      if (response.status === 200) {  persist.push(newCard);  createColoring(newCard);
-        titleInput.value = "";
-        specialInput.value = "";
-      }
-    });
-  }
+    postCard(newCard)
+  
   location.reload();
 }
 function deteleApply(div: HTMLDivElement) {
