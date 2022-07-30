@@ -5,10 +5,10 @@ const formAppointment = document.querySelector('.appointment-form');
 const formAppointmentDelete = document.querySelector('.appointment-form-delete');
 const formAppointmentUpdate = document.querySelector('.appointment-form-update');
 getAll().then(cards => {
-    state = cards;
+    persist = cards;
     recreateCards(cards);
 });
-let state = [];
+let persist = [];
 function recreateCards(cards) {
     cards.forEach(cards => createColoring(cards));
 }
@@ -24,18 +24,18 @@ function createColoring(cards) {
   Physician in charge : ${cards.physician_in_charge}
 
    `;
-    const dateP = document.createElement('p');
-    dateP.className = `single-cards-date-${cards.id} appointments`;
-    dateP.innerText = JSON.stringify(cards.appointmentList, null, '\t');
+    const listAppoint = document.createElement('p');
+    listAppoint.className = `single-cards-date-${cards.id} appointments`;
+    listAppoint.innerText = JSON.stringify(cards.appointmentList, null, '\t');
     const deleteButton = document.createElement('button');
     deleteButton.className = 'single-cards-delete-button';
     deleteButton.innerText = 'Delete Speciality';
-    deleteButton.addEventListener('click', () => handleDelete(div));
+    deleteButton.addEventListener('click', () => deteleApply(div));
     const editButton = document.createElement('button');
     editButton.className = 'single-cards-edit-button';
     editButton.innerText = 'Change Medical Speciality';
-    editButton.addEventListener('click', () => hanldeEdit(cards));
-    div.append(h3, deleteButton, editButton, dateP);
+    editButton.addEventListener('click', () => editApply(cards));
+    div.append(h3, deleteButton, editButton, listAppoint);
     cardsContainer.append(div);
 }
 // logica para crear el appopitnment y recibir los datos 
@@ -81,7 +81,7 @@ function handleSubmit(e) {
         };
         postCard(newCard).then(response => {
             if (response.status === 200) {
-                state.push(newCard);
+                persist.push(newCard);
                 createColoring(newCard);
                 titleInput.value = '';
                 specialInput.value = '';
@@ -90,7 +90,7 @@ function handleSubmit(e) {
     }
     location.reload();
 }
-function handleDelete(div) {
+function deteleApply(div) {
     const id = div.classList[1].split('-')[1];
     console.log("soy id", id);
     const idObjetc = id;
@@ -98,12 +98,12 @@ function handleDelete(div) {
     deleteCard({ "id": idObjetc }).then(response => {
         if (response.status === 200) {
             div.remove();
-            const newSate = state.filter((cards) => cards.id !== parseInt(id));
-            state = newSate;
+            const newPersist = persist.filter((cards) => cards.id !== parseInt(id));
+            persist = newPersist;
         }
     });
 }
-function hanldeEdit(cards) {
+function editApply(cards) {
     const titleInput = document.querySelector('.title-input');
     const specialInput = document.querySelector('.special-input');
     const submitButton = document.querySelector('.medical-form-button');
