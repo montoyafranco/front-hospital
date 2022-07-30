@@ -1,4 +1,4 @@
-// import { noteI } from "./index";
+// import { cardsI } from "./index";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,20 +16,20 @@ export function getAll() {
         return data;
     });
 }
-export function postNote(note) {
+export function postCard(cards) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(note);
+        console.log(cards);
         const response = yield fetch('http://localhost:8081/api/create/speciality', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(note)
+            body: JSON.stringify(cards)
         });
         return response;
     });
 }
-export function deleteNote(id) {
+export function deleteCard(id) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(id);
         const response = yield fetch("http://localhost:8081/api/delete/speciality", {
@@ -42,7 +42,7 @@ export function deleteNote(id) {
         return response;
     });
 }
-export function putNote(id, name, physician_in_charge) {
+export function putCard(id, name, physician_in_charge) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(id);
         const response = yield fetch(`http://localhost:8081/api/update/${id}?name=${name}&physician_in_charge=${physician_in_charge}`, {

@@ -1,4 +1,4 @@
-// import { noteI } from "./index";
+// import { cardsI } from "./index";
 
 export async function getAll() {
   const response:Response = await fetch('http://localhost:8081/api/')
@@ -9,21 +9,21 @@ export async function getAll() {
   return data
 } 
 
-export async function postNote(note:any){
-  console.log(note)
+export async function postCard(cards:any){
+  console.log(cards)
   const response:Response = await fetch('http://localhost:8081/api/create/speciality', 
   {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json' 
     },
-    body: JSON.stringify(note)
+    body: JSON.stringify(cards)
   })
 
   return response;
 }
 
-export async function deleteNote(id:any){
+export async function deleteCard(id:any){
   console.log(id)
   const response:Response = await fetch("http://localhost:8081/api/delete/speciality", 
   {
@@ -38,7 +38,7 @@ export async function deleteNote(id:any){
   return response;
 }
 
-export async function putNote(id:any, name:any,physician_in_charge :any){
+export async function putCard(id:any, name:any,physician_in_charge :any){
   console.log(id)
   const response:Response = await fetch(`http://localhost:8081/api/update/${id}?name=${name}&physician_in_charge=${physician_in_charge}`,
   {

@@ -1,6 +1,6 @@
-import { getAll, postNote, deleteNote, putNote,createAppointment,deleteAppointment, modifyAppointment } from "./actions.js";
+import { getAll, postCard, deleteCard, putCard,createAppointment,deleteAppointment, modifyAppointment } from "./actions.js";
 
-const form: HTMLFormElement |null = document.querySelector('.reminders-form');
+const form: HTMLFormElement |null = document.querySelector('.medical-form');
 
 // Selector of appointment creator
 const formAppointment : HTMLFormElement | null = document.querySelector('.appointment-form')
@@ -9,27 +9,27 @@ const formAppointmentDelete : HTMLFormElement | null = document.querySelector('.
 
 const formAppointmentUpdate : HTMLFormElement | null = document.querySelector('.appointment-form-update')
 
-getAll().then(notes => {
-  state = notes
-  recreateNotes(notes);
+getAll().then(cards => {
+  state = cards
+  recreateCards(cards);
 })
 let state: any = []
 
-function recreateNotes(notes:[]){
-  notes.forEach(note => createReminder(note))
+function recreateCards(cards:[]){
+  cards.forEach(cards => createColoring(cards))
 }
-function createReminder(note:any){
-  const notesContainer = document.querySelector('.notes-container') as HTMLDivElement
+function createColoring(cards:any){
+  const cardsContainer = document.querySelector('.cards-container') as HTMLDivElement
 
   const div:HTMLDivElement = document.createElement('div');
   div.className = 'single-todo-container'
-  div.classList.add(`note-${note.id}`)
+  div.classList.add(`cards-${cards.id}`)
 
   const h3:HTMLHeadElement = document.createElement('h3');
-  h3.className = `single-note-title-${note.id}`
-  h3.innerText =`ID Specialist: ${note.id.toString()}
-  Specialist : ${note.name}
-  Physician in charge : ${note.physician_in_charge}
+  h3.className = `single-cards-title-${cards.id}`
+  h3.innerText =`ID Specialist: ${cards.id.toString()}
+  Specialist : ${cards.name}
+  Physician in charge : ${cards.physician_in_charge}
 
    ` 
 
@@ -39,24 +39,24 @@ function createReminder(note:any){
   
 
 
-  dateP.className = `single-note-date-${note.id} appointments`
+  dateP.className = `single-cards-date-${cards.id} appointments`
 
-  dateP.innerText = JSON.stringify(note.appointmentList,null, '\t')
+  dateP.innerText = JSON.stringify(cards.appointmentList,null, '\t')
   
   
 
   const deleteButton:HTMLButtonElement = document.createElement('button')
-  deleteButton.className = 'single-note-delete-button'
+  deleteButton.className = 'single-cards-delete-button'
   deleteButton.innerText = 'Delete Speciality'
   deleteButton.addEventListener('click', ()=> handleDelete(div))
 
   const editButton:HTMLButtonElement = document.createElement('button')
-  editButton.className = 'single-note-edit-button'
+  editButton.className = 'single-cards-edit-button'
   editButton.innerText = 'Change Medical Speciality'
-   editButton.addEventListener('click', ()=> hanldeEdit(note))
+   editButton.addEventListener('click', ()=> hanldeEdit(cards))
 
   div.append(h3 ,deleteButton,editButton, dateP )
-  notesContainer.append(div)
+  cardsContainer.append(div)
 }
 // logica para crear el appopitnment y recibir los datos 
 formAppointment?.addEventListener('submit',(e) => handleSubmitAppointment(e))
@@ -92,7 +92,8 @@ function handleSubmitAppointment(e: SubmitEvent): any {
     "dateAppointments": dateAppointments.value,    
     "fkSpecialityId": fkSpecialityId.value
   }
-  ) 
+  )
+  location. reload()   
 }
 
 
@@ -106,27 +107,28 @@ function handleSubmitAppointmentDelete(e: SubmitEvent): any {
 function handleSubmit(e:SubmitEvent){
   e.preventDefault()
   const titleInput = document.querySelector('.title-input') as HTMLInputElement;
-  const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
-  if(titleInput.value&&reminderInput.value){    
-    const newNote = {     
+  const specialInput = document.querySelector('.special-input') as HTMLInputElement;
+  if(titleInput.value&&specialInput.value){    
+    const newCard = {     
       
       name: titleInput.value,
-      physician_in_charge: reminderInput.value,       
+      physician_in_charge: specialInput.value,       
     }
 
-    postNote(newNote).then(
+    postCard(newCard).then(
       response => {
         if(response.status === 200){
-          state.push(newNote)
+          state.push(newCard)
 
-          createReminder(newNote);  
+          createColoring(newCard);  
           titleInput.value = '';
-          reminderInput.value = '';
+          specialInput.value = '';
         }
       }
     )
     
   }
+  location. reload()  
 }
 function handleDelete(div:HTMLDivElement){
   const id:string = div.classList[1].split('-')[1]
@@ -135,37 +137,34 @@ function handleDelete(div:HTMLDivElement){
   const idObjetc: any = id  
 
   console.log("soy el obejto", idObjetc)
-  deleteNote({"id" :idObjetc}).then(response => {
+  deleteCard({"id" :idObjetc}).then(response => {
     if(response.status === 200){
       div.remove()
-      const newSate = state.filter((note: { id: number; }) => note.id !== parseInt(id))
+      const newSate = state.filter((cards: { id: number; }) => cards.id !== parseInt(id))
       state = newSate
     }
   })
 }
-function hanldeEdit(note:any){
+function hanldeEdit(cards:any){
   const titleInput = document.querySelector('.title-input') as HTMLInputElement;
-  const reminderInput = document.querySelector('.reminder-input') as HTMLInputElement;
-  const submitButton = document.querySelector('.reminders-form-button') as HTMLButtonElement
+  const specialInput = document.querySelector('.special-input') as HTMLInputElement;
+  const submitButton = document.querySelector('.medical-form-button') as HTMLButtonElement
   submitButton.classList.add('display_none')
 
   const editButton:HTMLButtonElement = document.createElement('button')
   editButton.className = 'form-edit-button'
   editButton.innerText = 'Submit New Data';
-  editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput))
+  editButton.addEventListener('click', () => executeEdition(cards, titleInput, specialInput))
 
   const formContainer = document.querySelector('.form-container');
   formContainer?.append(editButton)
   
-  titleInput.value = note.title
-  reminderInput.value = note.reminder;
+  titleInput.value = cards.title
+  specialInput.value = cards.special;
 }
-function executeEdition(note:any, title:HTMLInputElement, reminder:HTMLInputElement){
-  
+function executeEdition(cards:any, title:HTMLInputElement, special:HTMLInputElement){  
 
-  
-
-  putNote(note.id ,title.value ,reminder.value).then(response => {
+  putCard(cards.id ,title.value ,special.value).then(response => {
     if(response.status === 200){  
       location. reload()       
     }

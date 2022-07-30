@@ -1,42 +1,42 @@
-import { getAll, postNote, deleteNote, putNote, createAppointment, deleteAppointment, modifyAppointment } from "./actions.js";
-const form = document.querySelector('.reminders-form');
+import { getAll, postCard, deleteCard, putCard, createAppointment, deleteAppointment, modifyAppointment } from "./actions.js";
+const form = document.querySelector('.medical-form');
 // Selector of appointment creator
 const formAppointment = document.querySelector('.appointment-form');
 const formAppointmentDelete = document.querySelector('.appointment-form-delete');
 const formAppointmentUpdate = document.querySelector('.appointment-form-update');
-getAll().then(notes => {
-    state = notes;
-    recreateNotes(notes);
+getAll().then(cards => {
+    state = cards;
+    recreateCards(cards);
 });
 let state = [];
-function recreateNotes(notes) {
-    notes.forEach(note => createReminder(note));
+function recreateCards(cards) {
+    cards.forEach(cards => createColoring(cards));
 }
-function createReminder(note) {
-    const notesContainer = document.querySelector('.notes-container');
+function createColoring(cards) {
+    const cardsContainer = document.querySelector('.cards-container');
     const div = document.createElement('div');
     div.className = 'single-todo-container';
-    div.classList.add(`note-${note.id}`);
+    div.classList.add(`cards-${cards.id}`);
     const h3 = document.createElement('h3');
-    h3.className = `single-note-title-${note.id}`;
-    h3.innerText = `ID Specialist: ${note.id.toString()}
-  Specialist : ${note.name}
-  Physician in charge : ${note.physician_in_charge}
+    h3.className = `single-cards-title-${cards.id}`;
+    h3.innerText = `ID Specialist: ${cards.id.toString()}
+  Specialist : ${cards.name}
+  Physician in charge : ${cards.physician_in_charge}
 
    `;
     const dateP = document.createElement('p');
-    dateP.className = `single-note-date-${note.id} appointments`;
-    dateP.innerText = JSON.stringify(note.appointmentList, null, '\t');
+    dateP.className = `single-cards-date-${cards.id} appointments`;
+    dateP.innerText = JSON.stringify(cards.appointmentList, null, '\t');
     const deleteButton = document.createElement('button');
-    deleteButton.className = 'single-note-delete-button';
+    deleteButton.className = 'single-cards-delete-button';
     deleteButton.innerText = 'Delete Speciality';
     deleteButton.addEventListener('click', () => handleDelete(div));
     const editButton = document.createElement('button');
-    editButton.className = 'single-note-edit-button';
+    editButton.className = 'single-cards-edit-button';
     editButton.innerText = 'Change Medical Speciality';
-    editButton.addEventListener('click', () => hanldeEdit(note));
+    editButton.addEventListener('click', () => hanldeEdit(cards));
     div.append(h3, deleteButton, editButton, dateP);
-    notesContainer.append(div);
+    cardsContainer.append(div);
 }
 // logica para crear el appopitnment y recibir los datos 
 formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener('submit', (e) => handleSubmitAppointment(e));
@@ -64,6 +64,7 @@ function handleSubmitAppointment(e) {
         "dateAppointments": dateAppointments.value,
         "fkSpecialityId": fkSpecialityId.value
     });
+    location.reload();
 }
 function handleSubmitAppointmentDelete(e) {
     const id = document.querySelector('.id-input-deleted-appointment');
@@ -72,51 +73,52 @@ function handleSubmitAppointmentDelete(e) {
 function handleSubmit(e) {
     e.preventDefault();
     const titleInput = document.querySelector('.title-input');
-    const reminderInput = document.querySelector('.reminder-input');
-    if (titleInput.value && reminderInput.value) {
-        const newNote = {
+    const specialInput = document.querySelector('.special-input');
+    if (titleInput.value && specialInput.value) {
+        const newCard = {
             name: titleInput.value,
-            physician_in_charge: reminderInput.value,
+            physician_in_charge: specialInput.value,
         };
-        postNote(newNote).then(response => {
+        postCard(newCard).then(response => {
             if (response.status === 200) {
-                state.push(newNote);
-                createReminder(newNote);
+                state.push(newCard);
+                createColoring(newCard);
                 titleInput.value = '';
-                reminderInput.value = '';
+                specialInput.value = '';
             }
         });
     }
+    location.reload();
 }
 function handleDelete(div) {
     const id = div.classList[1].split('-')[1];
     console.log("soy id", id);
     const idObjetc = id;
     console.log("soy el obejto", idObjetc);
-    deleteNote({ "id": idObjetc }).then(response => {
+    deleteCard({ "id": idObjetc }).then(response => {
         if (response.status === 200) {
             div.remove();
-            const newSate = state.filter((note) => note.id !== parseInt(id));
+            const newSate = state.filter((cards) => cards.id !== parseInt(id));
             state = newSate;
         }
     });
 }
-function hanldeEdit(note) {
+function hanldeEdit(cards) {
     const titleInput = document.querySelector('.title-input');
-    const reminderInput = document.querySelector('.reminder-input');
-    const submitButton = document.querySelector('.reminders-form-button');
+    const specialInput = document.querySelector('.special-input');
+    const submitButton = document.querySelector('.medical-form-button');
     submitButton.classList.add('display_none');
     const editButton = document.createElement('button');
     editButton.className = 'form-edit-button';
     editButton.innerText = 'Submit New Data';
-    editButton.addEventListener('click', () => executeEdition(note, titleInput, reminderInput));
+    editButton.addEventListener('click', () => executeEdition(cards, titleInput, specialInput));
     const formContainer = document.querySelector('.form-container');
     formContainer === null || formContainer === void 0 ? void 0 : formContainer.append(editButton);
-    titleInput.value = note.title;
-    reminderInput.value = note.reminder;
+    titleInput.value = cards.title;
+    specialInput.value = cards.special;
 }
-function executeEdition(note, title, reminder) {
-    putNote(note.id, title.value, reminder.value).then(response => {
+function executeEdition(cards, title, special) {
+    putCard(cards.id, title.value, special.value).then(response => {
         if (response.status === 200) {
             location.reload();
         }

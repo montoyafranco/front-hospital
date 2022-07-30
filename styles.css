@@ -85,11 +85,11 @@ body{
     align-items: stretch;
 
 }
-.form-notes-container{
+.form-cards-container{
   
 
 }
-.reminders-form {
+.medical-form {
     background-color: rgb(206, 229, 208);
   display: flex;
   flex-direction: column;
@@ -127,7 +127,7 @@ body{
     .container-super{
         display: flex;
     }
-    .notes-container{
+    .cards-container{
         display:flex;
         width: 100%;
         
