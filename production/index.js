@@ -24,21 +24,23 @@ function createColoring(cards) {
    `;
     const listAppoint = document.createElement("p");
     listAppoint.className = `single-cards-date-${cards.id} appointments`;
-    listAppoint.innerText = JSON.stringify(cards.appointmentList, null, "\t");
+    listAppoint.innerText = JSON.stringify(cards.appointmentList, null, "\t").replace(/"id"/g, "ID of Identification for Appointment")
+        .replace(/"name"/g, "Name of Pattient").replace(/"age"/g, "Age").replace(/"identification_number"/g, "DNI")
+        .replace(/"dateAppointments"/g, "Dates").replace(/"number_of_appointments"/g, "Appointmennt Counter")
+        .replace(/"fkSpecialityId"/g, "Id of Speciality").replace(/(\{|\}|\(|\)  )/gm, " ----------------------------");
     const deleteButton = document.createElement("button");
     deleteButton.className = "single-cards-delete-button";
     deleteButton.innerText = "Delete Speciality";
-    deleteButton.addEventListener("click", () => deteleApply(div));
     const editButton = document.createElement("button");
     editButton.className = "single-cards-edit-button";
     editButton.innerText = "Change Medical Speciality";
+    deleteButton.addEventListener("click", () => deteleApply(div));
     editButton.addEventListener("click", () => editApply(cards));
     div.append(h3, deleteButton, editButton, listAppoint);
     cardsContainer.append(div);
 }
-// logica para crear el appopitnment y recibir los datos
-formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener("submit", (e) => handleSubmitAppointment(e));
-//
+//_-----------------LISTENERS-----
+formAppointment === null || formAppointment === void 0 ? void 0 : formAppointment.addEventListener("submit", (e) => handleSubmitAppointment(e)); //
 formAppointmentDelete === null || formAppointmentDelete === void 0 ? void 0 : formAppointmentDelete.addEventListener("submit", (e) => handleSubmitAppointmentDelete(e));
 form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) => handleSubmit(e));
 formAppointmentUpdate === null || formAppointmentUpdate === void 0 ? void 0 : formAppointmentUpdate.addEventListener("submit", (e) => handleSubmitAppointmentUpdate(e));

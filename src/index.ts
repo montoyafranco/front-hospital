@@ -35,11 +35,15 @@ function createColoring(cards: any) {
   ) as HTMLDivElement;
 
   const div: HTMLDivElement = document.createElement("div");
+
   div.className = "single-todo-container";
+
   div.classList.add(`cards-${cards.id}`);
 
   const h3: HTMLHeadElement = document.createElement("h3");
+
   h3.className = `single-cards-title-${cards.id}`;
+  
   h3.innerText = `ID Specialist: ${cards.id.toString()}
   Specialist : ${cards.name}
   Physician in charge : ${cards.physician_in_charge}
@@ -50,41 +54,39 @@ function createColoring(cards: any) {
 
   listAppoint.className = `single-cards-date-${cards.id} appointments`;
 
-  listAppoint.innerText = JSON.stringify(cards.appointmentList, null, "\t");
+  listAppoint.innerText = JSON.stringify(cards.appointmentList, null, "\t").replace(/"id"/g,"ID of Identification for Appointment")
+  .replace(/"name"/g,"Name of Pattient").replace(/"age"/g,"Age").replace(/"identification_number"/g,"DNI")
+  .replace(/"dateAppointments"/g,"Dates").replace(/"number_of_appointments"/g,"Appointmennt Counter")
+  .replace(/"fkSpecialityId"/g,"Id of Speciality").replace(/(\{|\}|\(|\)  )/gm, " ----------------------------")
 
   const deleteButton: HTMLButtonElement = document.createElement("button");
+
   deleteButton.className = "single-cards-delete-button";
-  deleteButton.innerText = "Delete Speciality";
-  deleteButton.addEventListener("click", () => deteleApply(div));
+
+  deleteButton.innerText = "Delete Speciality";  
 
   const editButton: HTMLButtonElement = document.createElement("button");
-  editButton.className = "single-cards-edit-button";
-  editButton.innerText = "Change Medical Speciality";
-  editButton.addEventListener("click", () => editApply(cards));
 
+  editButton.className = "single-cards-edit-button";
+
+  editButton.innerText = "Change Medical Speciality";
+ 
+
+  deleteButton.addEventListener("click", () => deteleApply(div));
+  editButton.addEventListener("click", () => editApply(cards));
   div.append(h3, deleteButton, editButton, listAppoint);
   cardsContainer.append(div);
 }
-// logica para crear el appopitnment y recibir los datos
-formAppointment?.addEventListener("submit", (e) => handleSubmitAppointment(e));
-//
-formAppointmentDelete?.addEventListener("submit", (e) =>
-  handleSubmitAppointmentDelete(e)
-);
-
+//_-----------------LISTENERS-----
+formAppointment?.addEventListener("submit", (e) => handleSubmitAppointment(e));//
+formAppointmentDelete?.addEventListener("submit", (e) =>  handleSubmitAppointmentDelete(e));
 form?.addEventListener("submit", (e) => handleSubmit(e));
-
-formAppointmentUpdate?.addEventListener("submit", (e) =>
-  handleSubmitAppointmentUpdate(e)
+formAppointmentUpdate?.addEventListener("submit", (e) =>  handleSubmitAppointmentUpdate(e)
 );
 
 function handleSubmitAppointmentUpdate(e: SubmitEvent): any {
-  const id = document.querySelector(
-    ".id-input-modify-appointment"
-  ) as HTMLInputElement;
-  const dateAppointments = document.querySelector(
-    ".date-input-appointment-modify"
-  ) as HTMLInputElement;
+  const id = document.querySelector(    ".id-input-modify-appointment"  ) as HTMLInputElement;
+  const dateAppointments = document.querySelector(    ".date-input-appointment-modify"  ) as HTMLInputElement;
   modifyAppointment(id.value, dateAppointments.value);
 }
 
@@ -95,11 +97,9 @@ function handleSubmitAppointment(e: SubmitEvent): any {
   const identification_number = document.querySelector(
     ".identification-input"
   ) as HTMLInputElement;
-  const dateAppointments = document.querySelector(
-    ".date-input"
+  const dateAppointments = document.querySelector(    ".date-input"
   ) as HTMLInputElement;
-  const fkSpecialityId = document.querySelector(
-    ".speciality-input"
+  const fkSpecialityId = document.querySelector(    ".speciality-input"
   ) as HTMLInputElement;
   
   createAppointment({
@@ -112,8 +112,7 @@ function handleSubmitAppointment(e: SubmitEvent): any {
   location.reload();
 }
 
-function handleSubmitAppointmentDelete(e: SubmitEvent): any {
-  const id = document.querySelector(
+function handleSubmitAppointmentDelete(e: SubmitEvent): any {  const id = document.querySelector(
     ".id-input-deleted-appointment"
   ) as HTMLInputElement;
   deleteAppointment({ id: id.value });
@@ -153,11 +152,9 @@ function editApply(cards: any) {
   
   
   const titleInput = document.querySelector(".title-input") as HTMLInputElement;
-  const specialInput = document.querySelector(
-    ".special-input"
+  const specialInput = document.querySelector(    ".special-input"
   ) as HTMLInputElement;
-  const submitButton = document.querySelector(
-    ".medical-form-button"
+  const submitButton = document.querySelector(    ".medical-form-button"
   ) as HTMLButtonElement;
   submitButton.classList.add("display_none");
 
@@ -174,12 +171,7 @@ function editApply(cards: any) {
   titleInput.value = cards.title;
   specialInput.value = cards.special;
 }
-function executeEdition(
-  cards: any,
-  title: HTMLInputElement,
-  special: HTMLInputElement
-) {
-  
+function executeEdition(  cards: any,  title: HTMLInputElement,  special: HTMLInputElement) {  
   putCard(cards.id, title.value, special.value).then((response) => {
     if (response.status === 200) {
       location.reload();
